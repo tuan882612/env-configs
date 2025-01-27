@@ -1,8 +1,8 @@
-local on_attach = require("plugins.configs.lspconfig").on_attach
-local capabilities = require("plugins.configs.lspconfig").capabilities
+-- load defaults i.e lua_lsp
+require("nvchad.configs.lspconfig").defaults()
 
 local lspconfig = require "lspconfig"
-local util = require "lspconfig/util"
+local util = require("lspconfig.util")
 
 lspconfig.gopls.setup {
   on_attach = on_attach,
@@ -27,9 +27,9 @@ lspconfig.ruff.setup {
   capabilities = capabilities,
   cmd = {"ruff-lsp"},
   filetypes = {
-    "rust",
+    "python",
   },
-  root_dir = util.root_pattern("Cargo.toml", ".git"),
+  root_dir = util.root_pattern("pyproject.toml", ".git"),
 }
 
 lspconfig.pyright.setup {

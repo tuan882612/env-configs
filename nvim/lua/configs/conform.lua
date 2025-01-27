@@ -1,17 +1,17 @@
-local conform = require("conform")
-
-local opts = {
+local options = {
   formatters_by_ft = {
-    go = { "gofmt" },
+    lua = { "stylua" },
+    go = { "gofumpt", "goimports_reviser" },
     python = { "black" },
     rust = { "rustfmt" },
     zig = { "zigfmt" },
     c = { "clang-format" },
   },
+
   format_on_save = {
+    timeout_ms = 500,
     lsp_fallback = true,
   },
 }
 
-conform.setup(opts)
-return opts
+return options
