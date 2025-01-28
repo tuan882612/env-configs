@@ -12,3 +12,7 @@ map("n", "<leader>cf", function()
 end, { desc = "Format file with Conform" })
 
 -- map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")
+
+map('n', 'fr', function()
+  vim.lsp.buf.references()
+end, { desc = "Telescope find references"})
