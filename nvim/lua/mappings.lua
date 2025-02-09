@@ -7,14 +7,9 @@ local map = vim.keymap.set
 map("n", ";", ":", { desc = "CMD enter command mode" })
 map("i", "kj", "<ESC>")
 
-map("n", "<leader>cf", function()
-  require("conform").format { async = true }
-end, { desc = "Format file with Conform" })
+map("n", "<leader>rr", ":,s///g<Left><Left><Left>", { noremap = true, silent = false, desc = "Replace all within range"})
+map("n", "<leader>r", vim.lsp.buf.rename, { desc = "Rename variable using LSP" })
 
-map("n", "<leader>r", ":%s///gc<Left><Left><Left>", { desc = "Search and replace interactively" })
-map("n", "<leader>rr", ":'<,'>s//g<Left><Left>", { noremap = true, silent = false })
--- map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")
-
-map('n', 'fr', function()
+map("n", "<leader>fr", function()
   vim.lsp.buf.references()
 end, { desc = "Telescope find references"})

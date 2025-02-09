@@ -47,5 +47,11 @@ return {
     config = function()
       require('Comment').setup()
     end,
-  }
+  },
+
+  -- Git Plugin
+  {
+    "tpope/vim-fugitive",
+    cmd = { "Git", "G" },
+  },
 }
