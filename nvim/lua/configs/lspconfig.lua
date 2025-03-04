@@ -7,7 +7,7 @@ local util = require("lspconfig.util")
 lspconfig.gopls.setup {
   on_attach = on_attach,
   capabilities = capabilities,
-  cmd = {"gopls"},
+  cmd = { "gopls" },
   filetypes = {
     "go", "gomod", "gowork", "gotmpl",
   },
@@ -25,7 +25,7 @@ lspconfig.gopls.setup {
 lspconfig.ruff.setup {
   on_attach = on_attach,
   capabilities = capabilities,
-  cmd = {"ruff-lsp"},
+  cmd = { "ruff-lsp" },
   filetypes = {
     "python",
   },
@@ -39,10 +39,13 @@ lspconfig.pyright.setup {
   settings = {
     python = {
       analysis = {
+        autoSearchPaths = true,
+        useLibraryCodeForTypes = true,
         typeCheckingMode = "basic",
         autoImportCompletions = true,
         diagnosticMode = "workspace",
       },
+      pythonPath = vim.fn.exepath("python")
     },
   },
 }
@@ -59,3 +62,4 @@ lspconfig.clangd.setup {
   filetypes = { "c", "cpp", "objc", "objcpp" },
   root_dir = lspconfig.util.root_pattern("compile_commands.json", "compile_flags.txt", ".git"),
 }
+

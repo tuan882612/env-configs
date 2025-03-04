@@ -5,7 +5,10 @@ local options = {
     python = { "black" },
     rust = { "rustfmt" },
     zig = { "zigfmt" },
-    c = { "clang-format" },
+    c = {
+      "clang-format",
+      args = { "--style={IndenWidth: 4, UseTab: Always, TabWith: 4}" }
+    },
   },
 
   format_on_save = {
