@@ -36,7 +36,7 @@ return {
   },
 
   -- Ui Plugin
-  { 
+  {
     "tribela/vim-transparent",
     event = "VimEnter",
   },

@@ -25,7 +25,7 @@ lspconfig.gopls.setup {
 lspconfig.ruff.setup {
   on_attach = on_attach,
   capabilities = capabilities,
-  filetypes = { "python"},
+  filetypes = { "python" },
   root_dir = util.root_pattern("pyproject.toml", ".git"),
 }
 
@@ -56,7 +56,23 @@ lspconfig.clangd.setup {
   on_attach = on_attach,
   capabilities = capabilities,
   cmd = { "clangd" },
-  filetypes = { "c", "cpp", "objc", "objcpp" },
+  filetypes = { "c", "cpp", "objc", "objcpp", "h", "hpp" },
   root_dir = lspconfig.util.root_pattern("compile_commands.json", "compile_flags.txt", ".git"),
 }
 
+lspconfig.ts_ls.setup {
+  on_attach = function(client, bufnr)
+    if client.name == "tsserver" then
+      client.server_capabilities.documentFormattingProvider = false
+    end
+  end,
+  capabilities = capabilities,
+  root_dir = util.root_pattern("package.json", "tsconfig.json", ".git"),
+  filetypes = {
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+  },
+  cmd = { "typescript-language-server", "--stdio" },
+}

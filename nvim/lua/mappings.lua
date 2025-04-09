@@ -5,10 +5,11 @@ require "nvchad.mappings"
 local map = vim.keymap.set
 
 map("n", ";", ":", { desc = "CMD enter command mode" })
-map("i", "ej", "<ESC>")
+-- map("i", "ej", "<ESC>")
 
-map("n", "<leader>rr", ":,s///g<Left><Left><Left>", { noremap = true, silent = false, desc = "Replace all within range" })
 map("n", "<leader>r", vim.lsp.buf.rename, { desc = "Rename variable using LSP" })
+map("v", "<leader>r", [[y:%s/<C-r>"/<C-r>"/gI<Left><Left><Left>]],
+  { desc = "Replace selected text" })
 
 map("n", "<leader>fr", function()
   vim.lsp.buf.references()

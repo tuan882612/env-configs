@@ -7,8 +7,12 @@ local options = {
     zig = { "zigfmt" },
     c = {
       "clang-format",
-      args = { "--style={IndenWidth: 4, UseTab: Always, TabWith: 4}" }
+      args = { "--style={IndenWidth: 4, UseTab: Always, TabWidth: 4}" }
     },
+    javascript = { "prettierd", "eslint_d" },
+    typescript = { "prettierd", "eslint_d" },
+    javascriptreact = { "prettierd", "eslint_d" },
+    typescriptreact = { "prettierd", "eslint_d" }
   },
 
   format_on_save = {
