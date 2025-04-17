@@ -1,11 +1,12 @@
 vim.api.nvim_create_autocmd("FileType", {
-  pattern = { "c", "cpp" },
+  pattern = { "c", "cpp", "zig" },
   callback = function()
     vim.bo.tabstop = 4
     vim.bo.shiftwidth = 4
     vim.bo.expandtab = false
     vim.bo.autoindent = true
     vim.bo.smartindent = true
+    vim.bo.textwidth = 85
   end,
 })
 

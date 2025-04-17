@@ -6,3 +6,5 @@ require "nvchad.options"
 -- o.cursorlineopt ='both' -- to enable cursorline!
 vim.opt.mouse = "a"
 vim.opt.clipboard = "unnamedplus"
+vim.opt.number = true
+vim.opt.relativenumber = true
