@@ -50,6 +50,16 @@ lspconfig.pyright.setup {
 lspconfig.zls.setup {
   on_attach = on_attach,
   capabilities = capabilities,
+  filetypes = { "zig" },
+  cmd = { "zls" },
+  root_dir = lspconfig.util.root_pattern("build.zig", ".git"),
+  settings = {
+    zls = {
+      build_root = "${workspaceFolder}",
+      enable = true,
+      build_on_save = true
+    }
+  }
 }
 
 lspconfig.clangd.setup {
