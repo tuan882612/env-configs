@@ -1,0 +1,20 @@
+{
+  "$schema": "https://raw.githubusercontent.com/zigtools/zls/refs/heads/master/schema.json",
+  "enable_snippets": true,
+  "enable_argument_placeholders": true,
+  "completion_label_details": true,
+  "enable_semantic_tokens": true,
+  "semantic_tokens": "full",
+  "operator_completions": true,
+  "inlay_hints_show_variable_type_hints": true,
+  "inlay_hints_show_struct_literal_field_type": true,
+  "inlay_hints_show_parameter_name": true,
+  "inlay_hints_show_builtin": true,
+  "enable_build_on_save": true,
+  "build_on_save_args": ["check"],
+  "enable_ast_check_diagnostics": true,
+  "prefer_ast_check_as_child_process": true,
+  "warn_style": true,
+  "skip_std_references": false,
+  "highlight_global_var_declarations": true
+}

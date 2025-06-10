@@ -35,6 +35,9 @@ return {
     end,
   },
 
+  -- Zig Plugin
+  { "ziglang/zig.vim" },
+
   -- Ui Plugin
   {
     "tribela/vim-transparent",
