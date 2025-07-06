@@ -7,13 +7,15 @@ local map = vim.keymap.set
 map("n", ";", ":", { desc = "CMD enter command mode" })
 -- map("i", "ej", "<ESC>")
 
-map("n", "<leader>r", vim.lsp.buf.rename, { desc = "Rename variable using LSP" })
-map("v", "<leader>r", [[y:%s/<C-r>"/<C-r>"/gI<Left><Left><Left>]],
-  { desc = "Replace selected text" })
+map("v", "<leader>rw", [[:<C-u>'<,'>s/<C-r><C-w>//gI<Left><Left><Left>]],
+  { desc = "Replace word under cursor in selection" })
 
-map("n", "gd", vim.lsp.buf.definition, { desc = "Jumps directly to where a function, var, or type is defined." })
+map("n", "gh", function()
+  vim.cmd("split")
+  vim.lsp.buf.definition()
+end, { desc = "Go to definition in horizontal split" })
 map("n", "gr", vim.lsp.buf.references, { desc = "Shows all places where the current symbol is used in project." })
-
+map("n", "J", "/", { desc = "Quick pattern search" })
 map("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code actions" })
 
 map("v", "J", ":m '>+1<CR>gv=gv", { desc = "Move selected lines down" })
