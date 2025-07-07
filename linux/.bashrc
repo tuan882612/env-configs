@@ -177,3 +177,10 @@ eval "$(pyenv virtualenv-init -)"
 
 # Extra alias
 alias code2txt="~/dev_env/python_env/code2text/src/scripts/code2txt.py"
+alias zigup="~/dev_env/zig_env/zig-out/bin/zigup"
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+export PATH="$HOME/tools/zig-linux-x86_64-0.14.0:$PATH"
+alias ws="~/windsurf-launcher.sh ."
