@@ -18,6 +18,8 @@ map("n", "gr", vim.lsp.buf.references, { desc = "Shows all places where the curr
 map("n", "J", "/", { desc = "Quick pattern search" })
 map("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code actions" })
 
+map("i", "<Tab>", "<Tab>", { desc = "Insert real tab or spaces" })
+
 map("v", "J", ":m '>+1<CR>gv=gv", { desc = "Move selected lines down" })
 map("v", "K", ":m '<-2<CR>gv=gv", { desc = "Move selected lines up" })
 
