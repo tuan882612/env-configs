@@ -7,7 +7,7 @@ local map = vim.keymap.set
 map("n", ";", ":", { desc = "CMD enter command mode" })
 -- map("i", "ej", "<ESC>")
 
-map("v", "<leader>rw", [[:<C-u>'<,'>s/<C-r><C-w>//gI<Left><Left><Left>]],
+map("v", "<leader>rr", [[:<C-u>'<,'>s/<C-r><C-w>//gI<Left><Left><Left>]],
   { desc = "Replace word under cursor in selection" })
 
 map("n", "gh", function()
