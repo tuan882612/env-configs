@@ -9,6 +9,8 @@ map("n", ";", ":", { desc = "CMD enter command mode" })
 
 map("v", "<leader>rr", [[:<C-u>'<,'>s/<C-r><C-w>//gI<Left><Left><Left>]],
   { desc = "Replace word under cursor in selection" })
+map("v", "<leader>ra", [[:<C-u>%s/<C-r><C-w>//gI<Left><Left><Left>]],
+  { desc = "Replace word under cursor in entire file" })
 
 map("n", "gh", function()
   vim.cmd("split")
