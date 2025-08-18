@@ -12,6 +12,20 @@ Return
 Return
 #IfWinActive
 
+; Apply to Warp Terminal
+#IfWinActive ahk_exe Warp.exe
+*CapsLock::
+    Send {Blind}{Ctrl Down}
+    cDown := A_TickCount
+Return
+*CapsLock up::
+    If ((A_TickCount-cDown)<270)
+        Send {Blind}{Ctrl Up}{Esc}
+    Else
+        Send {Blind}{Ctrl Up}
+Return
+#IfWinActive
+
 ; Apply to Arc with LeetCode check
 #IfWinActive, ahk_exe Arc.exe
 CapsLock::
