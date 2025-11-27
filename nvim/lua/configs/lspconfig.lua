@@ -54,6 +54,20 @@ lspconfig.zls.setup {
   root_dir = lspconfig.util.root_pattern("build.zig", ".git"),
 }
 
+lspconfig.rust_analyzer.setup {
+  on_attach = on_attach,
+  capabilities = capabilities,
+  cmd = { "rust-analyzer" },
+  filetypes = { "rust" },
+  root_dir = util.root_pattern("Cargo.toml", ".git"),
+  settings = {
+    ["rust-analyzer"] = {
+      cargo = { allFeatures = true },
+      checkOnSave = { command = "clippy" },
+    },
+  },
+}
+
 lspconfig.clangd.setup {
   on_attach = on_attach,
   capabilities = capabilities,
