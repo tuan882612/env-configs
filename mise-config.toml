@@ -1,0 +1,11 @@
+[tools]
+eza = "latest"
+gh = "latest"
+go = "latest"
+neovim = "latest"
+nerdctl = "latest"
+node = "20"
+poetry = "latest"
+python = "3.14.0"
+rust = "latest"
+zig = "latest"
