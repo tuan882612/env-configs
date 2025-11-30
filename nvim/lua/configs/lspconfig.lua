@@ -1,16 +1,21 @@
-require("nvchad.configs.lspconfig").defaults()
+-- Load NvChad’s default LSP settings (lua_ls, capabilities, etc.)
+local nvlsp = require("nvchad.configs.lspconfig")
+nvlsp.defaults()
 
-local lspconfig = require "lspconfig"
-local util = require("lspconfig.util")
+-- Helper to apply NvChad defaults to each server
+local function with_defaults(opts)
+  return vim.tbl_deep_extend("force", {
+    on_attach = nvlsp.on_attach,
+    on_init = nvlsp.on_init,
+    capabilities = nvlsp.capabilities,
+  }, opts or {})
+end
 
-lspconfig.gopls.setup {
-  on_attach = on_attach,
-  capabilities = capabilities,
+-- gopls (Go)
+vim.lsp.config("gopls", with_defaults({
   cmd = { "gopls" },
-  filetypes = {
-    "go", "gomod", "gowork", "gotmpl",
-  },
-  root_dir = util.root_pattern("go.work", "go.mod", ".git"),
+  filetypes = { "go", "gomod", "gowork", "gotmpl" },
+  root_markers = { "go.work", "go.mod", ".git" },
   settings = {
     gopls = {
       completeUnimported = true,
@@ -19,19 +24,23 @@ lspconfig.gopls.setup {
       },
     },
   },
-}
+}))
 
-lspconfig.ruff.setup {
-  on_attach = on_attach,
-  capabilities = capabilities,
+-- ruff (Python linter LSP)
+vim.lsp.config("ruff", with_defaults({
   filetypes = { "python" },
-  root_dir = util.root_pattern("pyproject.toml", ".git"),
-}
+  root_markers = { "pyproject.toml", ".git" },
+}))
 
-lspconfig.pyright.setup {
-  on_attach = on_attach,
-  capabilities = capabilities,
-  root_dir = util.root_pattern("pyproject.toml", "setup.py", "setup.cfg", "requirements.txt", ".git"),
+-- pyright (Python)
+vim.lsp.config("pyright", with_defaults({
+  root_markers = {
+    "pyproject.toml",
+    "setup.py",
+    "setup.cfg",
+    "requirements.txt",
+    ".git",
+  },
   settings = {
     python = {
       analysis = {
@@ -41,54 +50,64 @@ lspconfig.pyright.setup {
         autoImportCompletions = true,
         diagnosticMode = "workspace",
       },
-      pythonPath = vim.fn.exepath("python")
+      pythonPath = vim.fn.exepath("python"),
     },
   },
-}
+}))
 
-lspconfig.zls.setup {
-  on_attach = on_attach,
-  capabilities = capabilities,
-  filetypes = { "zig" },
+-- zls (Zig)
+vim.lsp.config("zls", with_defaults({
   cmd = { "zls" },
-  root_dir = lspconfig.util.root_pattern("build.zig", ".git"),
-}
+  filetypes = { "zig" },
+  root_markers = { "build.zig", ".git" },
+}))
 
-lspconfig.rust_analyzer.setup {
-  on_attach = on_attach,
-  capabilities = capabilities,
+-- rust-analyzer
+vim.lsp.config("rust_analyzer", with_defaults({
   cmd = { "rust-analyzer" },
   filetypes = { "rust" },
-  root_dir = util.root_pattern("Cargo.toml", ".git"),
+  root_markers = { "Cargo.toml", ".git" },
   settings = {
     ["rust-analyzer"] = {
       cargo = { allFeatures = true },
       checkOnSave = { command = "clippy" },
     },
   },
-}
+}))
 
-lspconfig.clangd.setup {
-  on_attach = on_attach,
-  capabilities = capabilities,
+-- clangd (C/C++)
+vim.lsp.config("clangd", with_defaults({
   cmd = { "clangd" },
   filetypes = { "c", "cpp", "objc", "objcpp", "h", "hpp" },
-  root_dir = lspconfig.util.root_pattern("compile_commands.json", "compile_flags.txt", ".git"),
-}
+  root_markers = { "compile_commands.json", "compile_flags.txt", ".git" },
+}))
 
-lspconfig.ts_ls.setup {
-  on_attach = function(client, bufnr)
-    if client.name == "tsserver" then
-      client.server_capabilities.documentFormattingProvider = false
-    end
-  end,
-  capabilities = capabilities,
-  root_dir = util.root_pattern("package.json", "tsconfig.json", ".git"),
+-- typescript-language-server
+vim.lsp.config("ts_ls", with_defaults({
+  cmd = { "typescript-language-server", "--stdio" },
   filetypes = {
     "javascript",
     "javascriptreact",
     "typescript",
     "typescriptreact",
   },
-  cmd = { "typescript-language-server", "--stdio" },
-}
+  root_markers = { "package.json", "tsconfig.json", ".git" },
+
+  on_attach = function(client, bufnr)
+    if client.name == "tsserver" or client.name == "ts_ls" then
+      client.server_capabilities.documentFormattingProvider = false
+    end
+
+    nvlsp.on_attach(client, bufnr)
+  end,
+}))
+
+vim.lsp.enable({
+  "gopls",
+  "ruff",
+  "pyright",
+  "zls",
+  "rust_analyzer",
+  "clangd",
+  "ts_ls",
+})
