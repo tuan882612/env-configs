@@ -21,6 +21,10 @@ end, { desc = "Go to definition in horizontal split" })
 map("n", "gr", vim.lsp.buf.references, { desc = "Shows all places where the current symbol is used in project." })
 map("n", "J", "/", { desc = "Quick pattern search" })
 map("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code actions" })
+-- Home/End on H/L
+map({ "n", "x", "o" }, "H", "^", { desc = "Start of line (first non-blank)" })
+map({ "n", "x", "o" }, "L", "$", { desc = "End of line (last non-blank)" })
+-- If you want true end-of-line including trailing spaces
 
 map("i", "<Tab>", "<Tab>", { noremap = true, desc = "Insert real tab or spaces" })
 
