@@ -5,7 +5,7 @@
 Return
 
 *CapsLock up::
-    If ((A_TickCount-cDown)<270)
+    If ((A_TickCount-cDown)<200)
         Send {Blind}{Ctrl Up}{Esc}
     Else
         Send {Blind}{Ctrl Up}
@@ -26,8 +26,8 @@ Return
 Return
 #IfWinActive
 
-; Apply to Arc with LeetCode check
-#IfWinActive, ahk_exe Arc.exe
+; Apply to Browsers with LeetCode check
+#IfWinActive, ahk_exe Arc.exe || ahk_exe waterfox.exe
 CapsLock::
     WinGetTitle, Title, A
     if InStr(Title, "leetcode") or InStr(Title, "LeetCode")
@@ -42,7 +42,7 @@ CapsLock::
         Send {Ctrl Up}
         
         ; If it was a quick tap, also send Escape
-        if (A_TimeSinceThisHotkey < 270)
+        if (A_TimeSinceThisHotkey < 200)
         {
             Send {Esc}
         }
