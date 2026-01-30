@@ -192,45 +192,77 @@ vim.lsp.config("lua_ls", with_defaults({
   },
 }))
 
--- luau-lsp 
+-- luau-lsp
 -- Ensure *.luau is recognized
 vim.filetype.add({ extension = { luau = "luau" } })
 
-local function luau_root(bufnr)
-  local fname = vim.api.nvim_buf_get_name(bufnr)
-  local dir = vim.fs.dirname(fname)
+local function luau_root_from_arg(arg)
+  local fname
 
-  return vim.fs.root(dir, function(name, _)
-    return name == "default.project.json"
-      or name == "sourcemap.json"
-      or name == ".luaurc"
-      or name:match("%.project%.json$") ~= nil
-  end)
+  if type(arg) == "number" then
+    fname = vim.api.nvim_buf_get_name(arg)
+  else
+    fname = arg
+  end
+
+  if not fname or fname == "" then
+    return vim.uv.cwd()
+  end
+
+  local dir = vim.fs.dirname(fname) or vim.uv.cwd()
+  local root = vim.fs.root(dir, {
+    "default.project.json",
+    "sourcemap.json",
+    ".luaurc",
+    ".git",
+  })
+
+  -- Support *.project.json via find
+  if not root then
+    local proj = vim.fs.find(function(name)
+      return name:match("%.project%.json$")
+    end, { upward = true, path = dir })[1]
+
+    if proj then
+      root = vim.fs.dirname(proj)
+    end
+  end
+
+  return root or dir
 end
 
--- If your Rojo project uses *.lua files, treat them as Luau inside Rojo roots
+-- Neovim built-in LSP expects root_dir(bufnr, cb)
+local function luau_root(bufnr, cb)
+  cb(luau_root_from_arg(bufnr))
+end
+
+-- Optional: treat *.lua as Luau only inside Rojo/Luau roots
 vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile" }, {
   pattern = "*.lua",
   callback = function(args)
-    if luau_root(args.buf) then
+    local root = luau_root_from_arg(args.buf)
+    local is_rojo = vim.fs.find(
+      { "default.project.json", "sourcemap.json", ".luaurc" },
+      { upward = true, path = root }
+    )[1]
+    if is_rojo then
       vim.bo[args.buf].filetype = "luau"
     end
   end,
 })
 
+-- Resolve executable (PATH first, then mason)
+local luau_bin = vim.fn.exepath("luau-lsp")
+
+if luau_bin == "" then
+  luau_bin = vim.fn.stdpath("data") .. "/mason/bin/luau-lsp"
+end
+
+-- Configure
 vim.lsp.config("luau_lsp", with_defaults({
-  -- nvim-lspconfig’s luau_lsp uses: luau-lsp lsp :contentReference[oaicite:0]{index=0}
-  cmd = { "luau-lsp", "lsp" },
+  cmd = { luau_bin, "lsp" }, -- if needed: { luau_bin, "--stdio" }
   filetypes = { "luau" },
   root_dir = luau_root,
-
-  -- Helps the server notice sourcemap.json changes when using Rojo sourcemaps :contentReference[oaicite:1]{index=1}
-  capabilities = vim.tbl_deep_extend("force", nvlsp.capabilities, {
-    workspace = {
-      didChangeWatchedFiles = { dynamicRegistration = true },
-    },
-  }),
-
   settings = {
     ["luau-lsp"] = {
       platform = { type = "roblox" },
@@ -238,6 +270,7 @@ vim.lsp.config("luau_lsp", with_defaults({
   },
 }))
 
+-- Ensure it's enabled
 vim.lsp.enable({
   "gopls",
   "ruff",
