@@ -31,4 +31,28 @@ return {
       require('Comment').setup()
     end,
   },
+
+  -- Luau Lsp Plugin
+  {
+    "lopi-py/luau-lsp.nvim",
+    ft = { "luau", "lua" },
+    config = function()
+      require("luau-lsp").setup({
+        platform = { type = "roblox" }, -- enables Roblox environment/types
+        types = {
+          roblox_security_level = "PluginSecurity",
+        },
+        sourcemap = {
+          enabled = true,
+          autogenerate = true, -- plugin runs rojo sourcemap for you
+          rojo_project_file = "default.project.json",
+          sourcemap_file = "sourcemap.json",
+        },
+        server = {
+          -- point at Mason’s luau-lsp binary
+          path = vim.fn.stdpath("data") .. "/mason/bin/luau-lsp",
+        },
+      })
+    end,
+  }
 }

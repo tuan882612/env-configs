@@ -192,84 +192,6 @@ vim.lsp.config("lua_ls", with_defaults({
   },
 }))
 
--- luau-lsp
--- Ensure *.luau is recognized
-vim.filetype.add({ extension = { luau = "luau" } })
-
-local function luau_root_from_arg(arg)
-  local fname
-
-  if type(arg) == "number" then
-    fname = vim.api.nvim_buf_get_name(arg)
-  else
-    fname = arg
-  end
-
-  if not fname or fname == "" then
-    return vim.uv.cwd()
-  end
-
-  local dir = vim.fs.dirname(fname) or vim.uv.cwd()
-  local root = vim.fs.root(dir, {
-    "default.project.json",
-    "sourcemap.json",
-    ".luaurc",
-    ".git",
-  })
-
-  -- Support *.project.json via find
-  if not root then
-    local proj = vim.fs.find(function(name)
-      return name:match("%.project%.json$")
-    end, { upward = true, path = dir })[1]
-
-    if proj then
-      root = vim.fs.dirname(proj)
-    end
-  end
-
-  return root or dir
-end
-
--- Neovim built-in LSP expects root_dir(bufnr, cb)
-local function luau_root(bufnr, cb)
-  cb(luau_root_from_arg(bufnr))
-end
-
--- Optional: treat *.lua as Luau only inside Rojo/Luau roots
-vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile" }, {
-  pattern = "*.lua",
-  callback = function(args)
-    local root = luau_root_from_arg(args.buf)
-    local is_rojo = vim.fs.find(
-      { "default.project.json", "sourcemap.json", ".luaurc" },
-      { upward = true, path = root }
-    )[1]
-    if is_rojo then
-      vim.bo[args.buf].filetype = "luau"
-    end
-  end,
-})
-
--- Resolve executable (PATH first, then mason)
-local luau_bin = vim.fn.exepath("luau-lsp")
-
-if luau_bin == "" then
-  luau_bin = vim.fn.stdpath("data") .. "/mason/bin/luau-lsp"
-end
-
--- Configure
-vim.lsp.config("luau_lsp", with_defaults({
-  cmd = { luau_bin, "lsp" }, -- if needed: { luau_bin, "--stdio" }
-  filetypes = { "luau" },
-  root_dir = luau_root,
-  settings = {
-    ["luau-lsp"] = {
-      platform = { type = "roblox" },
-    },
-  },
-}))
-
 -- Ensure it's enabled
 vim.lsp.enable({
   "gopls",
@@ -283,5 +205,4 @@ vim.lsp.enable({
   "tailwindcss",
   "eslint",
   "lua_ls",
-  "luau_lsp"
 })
