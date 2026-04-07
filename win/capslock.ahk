@@ -12,6 +12,20 @@ Return
 Return
 #IfWinActive
 
+; Apply to WezTerm
+#IfWinActive ahk_exe wezterm-gui.exe
+*CapsLock::
+    Send {Blind}{Ctrl Down}
+    cDown := A_TickCount
+Return
+*CapsLock up::
+    If ((A_TickCount-cDown)<200)
+        Send {Blind}{Ctrl Up}{Esc}
+    Else
+        Send {Blind}{Ctrl Up}
+Return
+#IfWinActive
+
 ; Apply to Warp Terminal
 #IfWinActive ahk_exe Warp.exe
 *CapsLock::
@@ -24,6 +38,11 @@ Return
     Else
         Send {Blind}{Ctrl Up}
 Return
+#IfWinActive
+
+; Chrome: Ctrl+Tab -> Ctrl+Q (quit)
+#IfWinActive ahk_exe chrome.exe
+^Tab::Send ^q
 #IfWinActive
 
 ; Apply to Browsers with LeetCode check
