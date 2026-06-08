@@ -1,5 +1,5 @@
 {
-    "description": "Caps Lock to Escape/Control in Terminal, Chrome, and Obsidian",
+    "description": "Caps Lock to Escape/Control in terminals, Chrome, and Obsidian",
     "manipulators": [
         {
             "conditions": [
@@ -9,6 +9,7 @@
                         "^com\\.googlecode\\.iterm2$",
                         "^io\\.alacritty$",
                         "^dev\\.warp\\.Warp-Stable$",
+                        "^dev\\.openwarp\\.OpenWarp$",
                         "^com\\.google\\.Chrome$",
                         "^md\\.obsidian$"
                     ],
